@@ -1,4 +1,8 @@
-# Aggregators Benchmark ![Docker Pulls](https://img.shields.io/docker/pulls/etobaza/dex-aggregator?style=flat-square&label=Docker%20Pulls) 
+# TON DEX Aggregator Benchmark ![Docker Pulls](https://img.shields.io/docker/pulls/etobaza/dex-aggregator?style=flat-square&label=Docker%20Pulls) 
+
+A Python benchmark for TON swap-route providers, with transaction emulation and CSV/Markdown reports.
+
+> **Historical results:** the comparison tables and service observations below were recorded on **12 March 2025**. They are not a current provider ranking. APIs, liquidity, and supported features may have changed.
 
 ## Introduction
 
@@ -20,8 +24,11 @@ ratio = output / input_amount
 
 ## Usage
 
+The source project requires Python 3.12 and uses Poetry for dependencies. The Docker example below collects token pairs and writes reports into a local `results` directory. Running it calls public provider and emulation APIs; it does not reproduce the historical blockchain state.
+
+
 ```bash
-docker run --rm -v "$(pwd)/results:/code/results" etobaza/dex-aggregator:main sh -c "python scripts/collect_jettons.py && python3 run.py ---in 100,1000"
+docker run --rm -v "$(pwd)/results:/code/results" etobaza/dex-aggregator:main sh -c "python scripts/collect_jettons.py && python3 run.py --in 100,1000"
 ```
 
 ```bash
@@ -46,7 +53,7 @@ Options:
                         Exclude some providers by name
 ```
 
-## Research Methodology
+## Research Methodology (March 2025 report)
 
 For testing, we take the top 100 tokens of the TON ecosystem by TVL.
 Then, we
@@ -66,8 +73,7 @@ When building a route, it's crucial to emulate the transaction and consider not 
 the gas costs, as a route might appear more profitable, but all profits could be lost in execution costs.
 
 ⚠️ This methodology isn't perfect since there's no way to specify which block state the routes are built on, and there's
-no ability to emulate the route on that specific block. However, with a large sample size, the research can be
-considered reliable.
+no ability to emulate the route on that specific block. The results remain sensitive to state changes, provider availability, the chosen sample, and the emulation backend.
 
 ## Supported Providers
 
@@ -112,7 +118,7 @@ API of rainbow.ag and titan.tg works unstably. If you are owner of these service
 For testing, more than 2000 routes were built and emulated on different servers in various locations. A total of 8
 hours of server time was spent.
 
-Data presented in the report was obtained on 12.03.2025
+Data presented in the report was obtained on 12 March 2025.
 
 ## Docker
 
@@ -122,7 +128,7 @@ The Docker image is available on Docker Hub at [etobaza/dex-aggregator](https://
 
 ### Available Tags
 
-- `latest`: The most recent build from the main branch
+- `main`: Builds published from the main branch
 - `vX.Y.Z`: Specific version releases (e.g., `v1.0.0`)
 - `vX.Y`: Major.Minor version (e.g., `v1.0`)
 
